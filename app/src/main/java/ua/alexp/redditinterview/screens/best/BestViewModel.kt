@@ -4,15 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ua.alexp.redditinterview.helpers.SingleLiveEvent
+import ua.alexp.redditinterview.models.ChildrenPost
 import ua.alexp.redditinterview.models.Post
 import ua.alexp.redditinterview.models.Result
 import ua.alexp.redditinterview.screens.base.BaseViewModel
 
 class BestViewModel : BaseViewModel() {
 
-    private val bestPostsLiveEvent = SingleLiveEvent<List<Post>>()
+    private val bestPostsLiveEvent = SingleLiveEvent<List<ChildrenPost>>()
 
-    val bestPostsLiveData: LiveData<List<Post>>
+    val bestPostsLiveData: LiveData<List<ChildrenPost>>
         get() = bestPostsLiveEvent
 
     fun loadBestPosts() {

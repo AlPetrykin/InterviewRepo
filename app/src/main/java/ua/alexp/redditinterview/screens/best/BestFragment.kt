@@ -33,5 +33,7 @@ class BestFragment : Fragment() {
         bestViewModel.errorLiveData.observe(viewLifecycleOwner,{
 
         })
+
+//        bestViewModel.loadBestPosts()
     }
 }
