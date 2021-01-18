@@ -18,13 +18,19 @@ class BestViewModel : BaseViewModel() {
         get() = bestPostsLiveEvent
 
     fun loadBestPosts() {
-        viewModelScope.launch {
-            when (val posts = getRepository().loadBestPosts()) {
-                is Result.Success -> {
-                    bestPostsLiveEvent.postValue(posts.data)
-                }
-                is Result.Error -> {
-                    sendError(posts.exception)
+        if (!isLoadingRunning()) {
+            setLoadingRunning(true)
+            viewModelScope.launch {
+                showPBLoading()
+                when (val posts = getRepository().loadBestPosts()) {
+                    is Result.Success -> {
+                        setLoadingRunning(false)
+                        bestPostsLiveEvent.postValue(posts.data)
+                    }
+                    is Result.Error -> {
+                        setLoadingRunning(false)
+                        sendError(posts.exception)
+                    }
                 }
             }
         }

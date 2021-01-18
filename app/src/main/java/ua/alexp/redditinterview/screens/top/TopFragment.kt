@@ -5,9 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_top.*
 import ua.alexp.redditinterview.R
 import ua.alexp.redditinterview.adapters.PostsAdapter
@@ -29,23 +31,34 @@ class TopFragment : Fragment(), OnPostClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViewModel()
         initRecyclerView()
+        initViewModel()
     }
 
     private fun initRecyclerView() {
         top_rv_posts?.layoutManager = LinearLayoutManager(requireContext())
         top_rv_posts?.adapter = postsAdapter
+        top_rv_posts?.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!top_rv_posts.canScrollVertically(1)){
+                    topViewModel.loadTopPosts()
+                }
+            }
+        })
     }
 
     private fun initViewModel() {
         topViewModel.topPostsLiveData.observe(viewLifecycleOwner, {
-            top_pb_loading?.visibility = View.GONE
             postsAdapter.addNewItems(it)
         })
 
         topViewModel.errorLiveData.observe(viewLifecycleOwner, {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+        })
 
+        topViewModel.showPBContentLoadingLiveData.observe(viewLifecycleOwner, {
+            postsAdapter.addLoading()
         })
 
         topViewModel.loadTopPosts()
