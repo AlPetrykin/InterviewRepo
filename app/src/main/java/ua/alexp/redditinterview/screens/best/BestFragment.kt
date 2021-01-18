@@ -5,8 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_best.*
 import ua.alexp.redditinterview.R
 import ua.alexp.redditinterview.adapters.PostsAdapter
@@ -34,12 +36,15 @@ class BestFragment : Fragment(), OnPostClickListener {
 
     private fun initViewModel() {
         bestViewModel.bestPostsLiveData.observe(viewLifecycleOwner, {
-            best_pb_loading?.visibility = View.GONE
             postsAdapter.addNewItems(it)
         })
 
         bestViewModel.errorLiveData.observe(viewLifecycleOwner,{
+            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+        })
 
+        bestViewModel.showPBContentLoadingLiveData.observe(viewLifecycleOwner, {
+            postsAdapter.addLoading()
         })
 
         bestViewModel.loadBestPosts()
@@ -48,6 +53,14 @@ class BestFragment : Fragment(), OnPostClickListener {
     private fun initRecyclerView(){
         best_rv_posts?.layoutManager = LinearLayoutManager(requireContext())
         best_rv_posts?.adapter = postsAdapter
+        best_rv_posts?.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1)){
+                    bestViewModel.loadBestPosts()
+                }
+            }
+        })
     }
 
     override fun onPostClick(imageUrl: String) {
