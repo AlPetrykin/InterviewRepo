@@ -13,12 +13,12 @@ import kotlinx.android.synthetic.main.fragment_best.*
 import ua.alexp.redditinterview.R
 import ua.alexp.redditinterview.adapters.PostsAdapter
 import ua.alexp.redditinterview.helpers.OnPostClickListener
+import ua.alexp.redditinterview.screens.base.BaseFragment
 import ua.alexp.redditinterview.screens.image_dialog.ImageDialogFragment
 
-class BestFragment : Fragment(), OnPostClickListener {
+class BestFragment : BaseFragment() {
 
     private val bestViewModel : BestViewModel by viewModels()
-    private val postsAdapter = PostsAdapter(this)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,24 +35,13 @@ class BestFragment : Fragment(), OnPostClickListener {
     }
 
     private fun initViewModel() {
-        bestViewModel.bestPostsLiveData.observe(viewLifecycleOwner, {
-            postsAdapter.addNewItems(it)
-        })
+        initViewModel(bestViewModel)
 
-        bestViewModel.errorLiveData.observe(viewLifecycleOwner,{
-            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
-        })
-
-        bestViewModel.showPBContentLoadingLiveData.observe(viewLifecycleOwner, {
-            postsAdapter.addLoading()
-        })
-
-        bestViewModel.loadBestPosts()
+        bestViewModel.preLoadPosts()
     }
 
     private fun initRecyclerView(){
-        best_rv_posts?.layoutManager = LinearLayoutManager(requireContext())
-        best_rv_posts?.adapter = postsAdapter
+        initRecyclerView(best_rv_posts)
         best_rv_posts?.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
@@ -63,9 +52,5 @@ class BestFragment : Fragment(), OnPostClickListener {
         })
     }
 
-    override fun onPostClick(imageUrl: String) {
-        val fm = requireActivity().supportFragmentManager
-        val imageDialogFragment = ImageDialogFragment(imageUrl)
-        imageDialogFragment.show(fm, "image_dialog")
-    }
+
 }

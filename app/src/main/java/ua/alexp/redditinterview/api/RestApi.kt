@@ -17,10 +17,6 @@ import java.util.concurrent.TimeUnit
 
 class RestApi {
 
-    companion object{
-        lateinit var api : PostsApi
-    }
-
     private fun provideCache(application: Application): Cache {
         val cacheSize = 10 * 1024 * 1024
         return Cache(application.cacheDir, cacheSize.toLong())
@@ -59,7 +55,7 @@ class RestApi {
         return retrofit.create(PostsApi::class.java)
     }
 
-    fun initRetrofit(application: Application){
-        api = provideTransactionApi(provideRetrofit(provideGson(), provideHttpClient(provideCache(application))))
+    fun initRetrofit(application: Application) : PostsApi{
+        return provideTransactionApi(provideRetrofit(provideGson(), provideHttpClient(provideCache(application))))
     }
 }

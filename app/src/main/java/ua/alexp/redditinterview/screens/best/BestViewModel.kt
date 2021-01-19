@@ -1,38 +1,15 @@
 package ua.alexp.redditinterview.screens.best
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
-import ua.alexp.redditinterview.helpers.SingleLiveEvent
-import ua.alexp.redditinterview.models.ChildrenPost
-import ua.alexp.redditinterview.models.Post
-import ua.alexp.redditinterview.models.Result
+import ua.alexp.redditinterview.enums.PostType
 import ua.alexp.redditinterview.screens.base.BaseViewModel
 
 class BestViewModel : BaseViewModel() {
 
-    private val bestPostsLiveEvent = MutableLiveData<List<ChildrenPost>>()
-
-    val bestPostsLiveData: LiveData<List<ChildrenPost>>
-        get() = bestPostsLiveEvent
-
     fun loadBestPosts() {
-        if (!isLoadingRunning()) {
-            setLoadingRunning(true)
-            viewModelScope.launch {
-                showPBLoading()
-                when (val posts = getRepository().loadBestPosts()) {
-                    is Result.Success -> {
-                        setLoadingRunning(false)
-                        bestPostsLiveEvent.postValue(posts.data)
-                    }
-                    is Result.Error -> {
-                        setLoadingRunning(false)
-                        sendError(posts.exception)
-                    }
-                }
-            }
-        }
+        loadPosts(PostType.BEST)
+    }
+
+    fun preLoadPosts(){
+        preLoadPosts(PostType.BEST)
     }
 }
