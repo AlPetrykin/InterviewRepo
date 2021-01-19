@@ -9,4 +9,8 @@ interface RedditRepository {
     suspend fun loadBestPosts() : Result<List<ChildrenPost>>
 
     suspend fun loadTopPosts() : Result<List<ChildrenPost>>
+
+    suspend fun preLoadBestPosts() : Result<List<ChildrenPost>>
+
+    suspend fun preLoadTopPosts() : Result<List<ChildrenPost>>
 }
