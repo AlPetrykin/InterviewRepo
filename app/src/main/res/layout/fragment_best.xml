@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".screens.best.BestFragment">
+    tools:context=".screens.posts.best.BestPostFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/best_rv_posts"

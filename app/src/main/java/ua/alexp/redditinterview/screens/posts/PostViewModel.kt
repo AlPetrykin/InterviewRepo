@@ -1,4 +1,4 @@
-package ua.alexp.redditinterview.screens.base
+package ua.alexp.redditinterview.screens.posts
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,22 +13,22 @@ import ua.alexp.redditinterview.repository.RedditRepository
 import ua.alexp.redditinterview.repository.RedditRepositoryImpl
 import java.util.concurrent.atomic.AtomicBoolean
 
-abstract class BaseViewModel : ViewModel() {
+class PostViewModel : ViewModel() {
 
     private val redditRepository : RedditRepository = RedditRepositoryImpl.repository
     private val isLoadingRunning = AtomicBoolean(false)
-    private val showPBContentLoadingLiveEvent = SingleLiveEvent<Boolean>()
+    private val showLoadingLiveEvent = SingleLiveEvent<Boolean>()
     private val errorLiveEvent = SingleLiveEvent<String>()
     private val postsLiveEvent = MutableLiveData<List<ChildrenPost>>()
 
     val errorLiveData : LiveData<String> = errorLiveEvent
 
-    val showPBContentLoadingLiveData : LiveData<Boolean> = showPBContentLoadingLiveEvent
+    val showLoadingLiveData : LiveData<Boolean> = showLoadingLiveEvent
 
     val postsLiveData : LiveData<List<ChildrenPost>> = postsLiveEvent
 
     private fun showPBLoading(){
-        showPBContentLoadingLiveEvent.value = true
+        showLoadingLiveEvent.value = true
     }
 
     private fun sendError(exception : String){
@@ -41,7 +41,7 @@ abstract class BaseViewModel : ViewModel() {
 
     private fun isLoadingRunning() = isLoadingRunning.get()
 
-    protected fun loadPosts(type : PostType){
+    fun loadPosts(type : PostType){
         if (!isLoadingRunning()) {
             setLoadingRunning(true)
             viewModelScope.launch {
@@ -51,7 +51,7 @@ abstract class BaseViewModel : ViewModel() {
         }
     }
 
-    protected fun preLoadPosts(type: PostType){
+    fun preLoadPosts(type: PostType){
         viewModelScope.launch {
             showPBLoading()
             checkResponse(initPrePostsType(type))
