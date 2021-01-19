@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/top_posts"
-        android:name="ua.alexp.redditinterview.screens.top.TopFragment"
+        android:name="ua.alexp.redditinterview.screens.posts.top.TopPostFragment"
         tools:layout="@layout/fragment_top"
         android:label="@string/top">
 
@@ -15,7 +15,7 @@
 
     <fragment
         android:id="@+id/best_posts"
-        android:name="ua.alexp.redditinterview.screens.best.BestFragment"
+        android:name="ua.alexp.redditinterview.screens.posts.best.BestPostFragment"
         tools:layout="@layout/fragment_best"
         android:label="@string/best">
 
