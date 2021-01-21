@@ -6,11 +6,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
+import ua.alexp.redditinterview.screens.main.SectionsPagerAdapter
 
 
 class MainActivity : AppCompatActivity() {
@@ -33,17 +31,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun setUpNavigation() {
 
-        val navView: BottomNavigationView = findViewById(R.id.main_btm_nav_view)
-
-        val navController = findNavController(R.id.nav_host_fragment_container)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.top_posts, R.id.best_posts
-            )
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
+        val viewPager: ViewPager = findViewById(R.id.view_pager)
+        viewPager.adapter = sectionsPagerAdapter
+        val tabs: TabLayout = findViewById(R.id.tabs)
+        tabs.setupWithViewPager(viewPager)
     }
 }
