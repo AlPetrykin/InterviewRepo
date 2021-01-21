@@ -1,4 +1,4 @@
-package ua.alexp.redditinterview.screens.image_dialog
+package ua.alexp.redditinterview.screens.dialogs.image
 
 import android.Manifest
 import android.content.ContentValues

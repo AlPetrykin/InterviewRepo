@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.fragment_best.*
 import ua.alexp.redditinterview.adapters.PostsAdapter
 import ua.alexp.redditinterview.enums.PostType
 import ua.alexp.redditinterview.helpers.OnPostClickListener
-import ua.alexp.redditinterview.screens.image_dialog.ImageDialogFragment
+import ua.alexp.redditinterview.screens.dialogs.image.ImageDialogFragment
 import ua.alexp.redditinterview.screens.posts.PostViewModel
 
 abstract class BasePostFragment : Fragment() {
